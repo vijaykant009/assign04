@@ -9,24 +9,53 @@ app = Flask(__name__)
 port = int(os.getenv("PORT", 5000))
 
 @app.route('/')
-def hello_world():
-    con = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};Server=tcp:azurevijaydb.database.windows.net,1433;Database=Quakes;Uid=vijaykant009@azurevijaydb;Pwd={J@ik@nt009};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
-    query="Select mag,latitude from quake3 where mag >= 7"
-    columns=['mag','latitude']
-    dic=dict()
-    cur=con.cursor()
-    mem=[]
-    cur.execute(query)
-    result=list(cur.fetchall())
-    for row in result:
-        memdict=dict()
-        for j,val in enumerate(row):
-            memdict[columns[j]]=val
-        mem.append(memdict)
-    # print(mem)
-    a=[1,2,3,4,5]
-    # print(a)
-    return render_template('chart.html',a=mem,chart="bar")
+def index():
+
+    return render_template('index.html')
+
+
+
+@app.route('/Search5', methods=['GET', 'POST'])
+def Search5():
+
+    cnxn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};Server=tcp:azurevijaydb.database.windows.net,1433;Database=Quakes;Uid=vijaykant009@azurevijaydb;Pwd={J@ik@nt009};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
+    cursor = cnxn.cursor()
+    cursor.execute("Select StateName,TotalPop from voting where TotalPop between '5000' and '10000'")
+    row = cursor.fetchall()
+    return render_template("view.html", row=row)
+
+
+
+@app.route('/Search10', methods=['GET', 'POST'])
+def Search10():
+    
+    cnxn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};Server=tcp:azurevijaydb.database.windows.net,1433;Database=Quakes;Uid=vijaykant009@azurevijaydb;Pwd={J@ik@nt009};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
+    cursor = cnxn.cursor()
+    cursor.execute("Select StateName,TotalPop from voting where TotalPop between '10000' and '50000'")
+    row = cursor.fetchall()
+    return render_template("view.html", row=row)
+
+
+@app.route('/chart',methods=['GET', 'POST'])
+def chart():
+	    mag = request.form['mag']
+	    con = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};Server=tcp:azurevijaydb.database.windows.net,1433;Database=Quakes;Uid=vijaykant009@azurevijaydb;Pwd={J@ik@nt009};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
+	    query="Select mag,latitude from quake3 where mag >= 7"
+	    columns=['mag','latitude']
+	    dic=dict()
+	    cur=con.cursor()
+	    mem=[]
+	    cur.execute(query)
+	    result=list(cur.fetchall())
+	    for row in result:
+	        memdict=dict()
+	        for j,val in enumerate(row):
+	            memdict[columns[j]]=val
+	        mem.append(memdict)
+	    # print(mem)
+	    a=[1,2,3,4,5]
+	    # print(a)
+	    return render_template('chart.html',a=mem,chart="bar")
 
 # @app.route('/streaming.csv')
 # def streaming():

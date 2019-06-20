@@ -1,0 +1,24 @@
+{% extends "about.html" %}
+{% block content %}
+
+        <table>
+            <tr>
+                <th>All State</th>
+                <th>Total population</th>                            
+
+            </tr>
+            {% for row in row %}
+                <tr>
+                    <td>
+                        {{row.StateName}}
+                    </td>
+                    <td>
+                        {{row.TotalPop}}
+                    </td>               
+                    
+                   
+                </tr>
+
+            {% endfor %}
+        </table>
+{% endblock content %}
