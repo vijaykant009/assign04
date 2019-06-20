@@ -49,6 +49,8 @@ def hello_world():
 #     return tuple(result)
 
 
+port = os.getenv("PORT", 5000)
 
 if __name__ == '__main__':
-    app.run(port=port,debug=True)
+   app.run(debug="true",port=int(port))
+
