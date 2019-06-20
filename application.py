@@ -26,7 +26,7 @@ def hello_world():
     # print(mem)
     a=[1,2,3,4,5]
     # print(a)
-    return render_template('chart.html',a=mem,chart="scatter")
+    return render_template('chart.html',a=mem,chart="bar")
 
 # @app.route('/streaming.csv')
 # def streaming():
