@@ -18,8 +18,8 @@
             chart.defaultColors = [
                new dimple.color("orange") // You can use #RGB here
            ];
-            chart.addCategoryAxis("x", "age_group");
-            chart.addMeasureAxis("y", "count");
+            chart.addCategoryAxis("x", "vtt");
+            chart.addMeasureAxis("y", "States");
             chart.addSeries(null, dimple.plot.bar);
             chart.draw();}
             
@@ -56,13 +56,6 @@
           .attr("y", ctm.f + bbox.y + bbox.height/2)
           .text(Math.round(1000*data.piePct)/10 + "%");;
       };
-
-
-
-
-
-
-
 
 
       myChart.draw();
