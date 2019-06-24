@@ -36,24 +36,24 @@ def Search10():
     return render_template("view.html", row=row)
 
 
-@app.route('/chart1',methods=['GET', 'POST'])
-def chart1():
-	    #mag = request.form['mag1']
-	    con = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};Server=tcp:azurevijaydb.database.windows.net,1433;Database=Quakes;Uid=vijaykant009@azurevijaydb;Pwd={J@ik@nt009};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
-	    query="Select Count(StateName),Registered from voting where Registered BETWEEN 2000 AND 5000"
-	    columns=['StateName','Registered']
-	    dic=dict()
-	    cur=con.cursor()
-	    mem=[]
-	    cur.execute(query)
-	    result=list(cur.fetchall())
-	    for row in result:
-	        memdict=dict()
-	        for j,val in enumerate(row):
-	            memdict[columns[j]]=val
-	        mem.append(memdict)
-	    a=[1,2,3,4,5]
-	    return render_template('chart.html',a=mem,chart="bar")
+# @app.route('/chart1',methods=['GET', 'POST'])
+# def chart1():
+# 	    #mag = request.form['mag1']
+# 	    con = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};Server=tcp:azurevijaydb.database.windows.net,1433;Database=Quakes;Uid=vijaykant009@azurevijaydb;Pwd={J@ik@nt009};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
+# 	    query="Select Count(StateName),Registered from voting where Registered BETWEEN 2000 AND 5000"
+# 	    columns=['StateName','Registered']
+# 	    dic=dict()
+# 	    cur=con.cursor()
+# 	    mem=[]
+# 	    cur.execute(query)
+# 	    result=list(cur.fetchall())
+# 	    for row in result:
+# 	        memdict=dict()
+# 	        for j,val in enumerate(row):
+# 	            memdict[columns[j]]=val
+# 	        mem.append(memdict)
+# 	    a=[1,2,3,4,5]
+# 	    return render_template('chart.html',a=mem,chart="bar")
 
 # @app.route('/streaming.csv')
 # def streaming():
@@ -76,8 +76,41 @@ def chart1():
 #     return tuple(result)
 
 
-@app.route('/chart',methods=['GET', 'POST'])
-def chart():
+@app.route('/chart5',methods=['GET', 'POST'])
+def chart5():
+   nvalue = 5
+   con = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};Server=tcp:azurevijaydb.database.windows.net,1433;Database=Quakes;Uid=vijaykant009@azurevijaydb;Pwd={J@ik@nt009};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
+   # a=nvalue #chnage this variable
+   start=nvalue
+   end=80
+   age_interval=[0]
+   val=start
+   while val<end:
+       val+=nvalue
+       age_interval.append(val)
+   mem=[]
+   for i in range(0,len(age_interval)-1):
+       #query="select (count(*)) as count from voting where age > "+str(age_interval[i])+" and age<"+str(age_interval[i+1])
+       query="select count(*) as count from voting where ((voted/Totalpop)*100) >"+str(age_interval[i])+" and ((voted/Totalpop)*100)< "+str(age_interval[i+1])
+       cur=con.cursor()
+       cur.execute(query)
+       result=list(cur.fetchall())
+       vtt=str(age_interval[i])+"-"+str(age_interval[i+1])
+       for row in result:
+           memdict=dict()
+           for j,val in enumerate(row):
+               memdict["vtt"]=vtt
+               memdict["States"]=val
+               mem.append(memdict)
+           print(mem)
+
+   return render_template('chart2.html',a=mem,chart="pie")
+
+
+
+
+@app.route('/chart10',methods=['GET', 'POST'])
+def chart10():
    nvalue = 10
    con = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};Server=tcp:azurevijaydb.database.windows.net,1433;Database=Quakes;Uid=vijaykant009@azurevijaydb;Pwd={J@ik@nt009};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
    # a=nvalue #chnage this variable
@@ -105,6 +138,43 @@ def chart():
            print(mem)
 
    return render_template('chart2.html',a=mem,chart="pie")
+
+
+
+
+
+
+
+@app.route('/chart15',methods=['GET', 'POST'])
+def chart15():
+   nvalue = 15
+   con = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};Server=tcp:azurevijaydb.database.windows.net,1433;Database=Quakes;Uid=vijaykant009@azurevijaydb;Pwd={J@ik@nt009};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
+   # a=nvalue #chnage this variable
+   start=nvalue
+   end=80
+   age_interval=[0]
+   val=start
+   while val<end:
+       val+=nvalue
+       age_interval.append(val)
+   mem=[]
+   for i in range(0,len(age_interval)-1):
+       #query="select (count(*)) as count from voting where age > "+str(age_interval[i])+" and age<"+str(age_interval[i+1])
+       query="select count(*) as count from voting where ((voted/Totalpop)*100) >"+str(age_interval[i])+" and ((voted/Totalpop)*100)< "+str(age_interval[i+1])
+       cur=con.cursor()
+       cur.execute(query)
+       result=list(cur.fetchall())
+       vtt=str(age_interval[i])+"-"+str(age_interval[i+1])
+       for row in result:
+           memdict=dict()
+           for j,val in enumerate(row):
+               memdict["vtt"]=vtt
+               memdict["States"]=val
+               mem.append(memdict)
+           print(mem)
+
+   return render_template('chart2.html',a=mem,chart="pie")
+
 
 
 
